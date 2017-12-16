@@ -36,7 +36,7 @@ It supports async and sync event chains thanks to [ruit](https://github.com/Gian
 
 ```js
 const userNamesStream = erre(
-  async user => await updateUsers(user), // async function returning a users collection
+  async user => await patchUsers(user), // async function returning a users collection
   users => users.map(user => user.name)
 )
 
@@ -51,16 +51,21 @@ userNamesStream.push({
 
 ## API
 
-### erre(...functions) | @returns [`stream`](#stream)
+### erre(...functions)
+##### @returns [`stream`](#stream)
 
 Create an `erre` stream object.
-The initial `functions` list is optional and it represents the chain of async or sync events needed to generate the final stream output received via [`onValue`](#streamonvalue) callbacks
+The initial `functions` list is optional and it represents the chain of async or sync events needed to generate the final stream output received via [`onValue`](#streamonvaluecallback) callbacks
 
 ### stream
 
-#### stream.push(value) | @returns `stream`
+#### stream.push(value)
+##### @returns `stream`
 
-Push a new value into the stream that will be asynchronously modified and returned as argument to [`stream.onValue`](#streamonvalue) method
+Push a new value into the stream that will be asynchronously modified and returned as argument to [`stream.onValue`](#streamonvaluecallback) method
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre()
@@ -68,9 +73,16 @@ stream.onValue(console.log) // 1
 stream.push(1)
 ```
 
-#### stream.onValue(callback) | @returns `stream`
+</details>
+
+#### stream.onValue(callback)
+##### @returns `stream`
 
 Add a callback that will be called receiving the output of the stream asynchronously
+
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => val + 1)
@@ -81,9 +93,14 @@ stream.onValue(val => console.log(val * 2)) // 4
 stream.push(1)
 ```
 
+</details>
+
 #### stream.onError(callback) | @returns `stream`
 
 Add a callback that will be called in case of errors or promise rejections during the output generation
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => {
@@ -96,9 +113,15 @@ stream.onError(console.log) // 'error'
 stream.push(1)
 ```
 
-#### stream.connect(function) | @returns `stream`
+</details>
+
+#### stream.connect(function)
+##### @returns `stream`
 
 Enhance the stream adding a new operation to the functions chain to generate its output
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => val + 1)
@@ -111,9 +134,15 @@ stream.connect(val => val * 2)
 stream.push(1)
 ```
 
-#### stream.end() | @returns `stream`
+</details>
+
+#### stream.end()
+##### @returns `stream`
 
 End the stream
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => val + 1)
@@ -130,9 +159,15 @@ stream.push(1)
 stream.push(1)
 ```
 
-#### stream.end() | @returns new `stream` object
+</details>
+
+#### stream.end()
+##### @returns new `stream` object
 
 Create a new stream object inheriting the function chain from its parent
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => val + 1)
@@ -150,9 +185,14 @@ stream.push(2)
 fork.push(5)
 ```
 
+</details>
+
 ### erre.cancel()
 
 Static function that if returned by any of the stream functions chain can be used to filter or stop the computation
+
+<details>
+ <summary>Example</summary>
 
 ```js
 const stream = erre(val => {
@@ -166,6 +206,8 @@ stream.push('foo') // filtered
 stream.push('1') // filtered
 stream.push(2)
 ```
+
+</details>
 
 [travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
 [travis-url]:https://travis-ci.org/GianlucaGuarini/erre
