@@ -133,7 +133,7 @@ describe('erre', () => {
     const startValue = 1
     const expectedValue = 4
 
-    stream.enhance(val => multiply(val, 2))
+    stream.connect(val => multiply(val, 2))
 
     stream
       .onValue((value) => {
@@ -149,7 +149,7 @@ describe('erre', () => {
     const startValue = 1
     const expectedValue = 2
 
-    stream.enhance(val => multiply(val, 2))
+    stream.connect(val => multiply(val, 2))
 
     fork
       .onValue((value) => {

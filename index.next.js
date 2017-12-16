@@ -76,19 +76,8 @@ export default function erre(...fns) {
       errors.add(callback)
       return this
     },
-    enhance(fn) {
+    connect(fn) {
       modifiers.add(fn)
-      return this
-    },
-    end() {
-      // kill the stream
-      exec(stream, modifiers, THE_END)
-
-      // clean up all the collections
-      success.clear()
-      errors.clear()
-      modifiers.clear()
-
       return this
     },
     push(input) {
@@ -103,6 +92,17 @@ export default function erre(...fns) {
             err => dispatch(errors, err)
           )
       }
+
+      return this
+    },
+    end() {
+      // kill the stream
+      exec(stream, modifiers, THE_END)
+
+      // clean up all the collections
+      success.clear()
+      errors.clear()
+      modifiers.clear()
 
       return this
     },

@@ -144,6 +144,9 @@ function exec(stream, modifiers, input) {
   return stream.next(input)
 }
 
+// alias for ruit canel to stop a stream chain
+erre.cancel = ruit.cancel;
+
 /**
  * Stream constuction function
  * @param   {...Function} fns - stream modifiers
@@ -164,19 +167,8 @@ function erre(...fns) {
       errors.add(callback);
       return this
     },
-    enhance(fn) {
+    connect(fn) {
       modifiers.add(fn);
-      return this
-    },
-    end() {
-      // kill the stream
-      exec(stream, modifiers, THE_END);
-
-      // clean up all the collections
-      success.clear();
-      errors.clear();
-      modifiers.clear();
-
       return this
     },
     push(input) {
@@ -191,6 +183,17 @@ function erre(...fns) {
             err => dispatch(errors, err)
           );
       }
+
+      return this
+    },
+    end() {
+      // kill the stream
+      exec(stream, modifiers, THE_END);
+
+      // clean up all the collections
+      success.clear();
+      errors.clear();
+      modifiers.clear();
 
       return this
     },
