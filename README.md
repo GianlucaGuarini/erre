@@ -12,6 +12,16 @@
 ```js
 import erre from 'erre'
 
+const stream = erre(
+  val => val.toUpperCase(),
+  val => val.reverse()
+)
+
+stream.onValue(val => console.log(val)) // EVOL, ETAH
+
+stream.push('love')
+stream.push('hate')
+
 ```
 
 [travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
