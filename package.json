@@ -1,0 +1,41 @@
+{
+  "name": "erre",
+  "version": "0.0.0",
+  "description": "Modern, performant and tiny streams script using generators",
+  "main": "erre.js",
+  "jsnext:main": "index.next.js",
+  "module": "index.next.js",
+  "scripts": {
+    "prepare": "npm run build && npm test",
+    "lint": "eslint index.next.js test.js rollup.config.js",
+    "build": "rollup -c",
+    "test": "npm run lint && mocha test.js"
+  },
+  "files": [
+    "index.js",
+    "index.next.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianlucaguarini/erre.git"
+  },
+  "keywords": [
+    "es6",
+    "es2015",
+    "streams",
+    "generator",
+    "functional",
+    "reactive"
+  ],
+  "author": "Gianluca Guarini <gianluca.guarini@gmail.com> (http://gianlucaguarini.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gianlucaguarini/erre/issues"
+  },
+  "homepage": "https://github.com/gianlucaguarini/erre#readme",
+  "devDependencies": {
+    "rollup": "^0.52.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "ruit": "^1.0.3"
+  }
+}
