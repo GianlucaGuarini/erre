@@ -12,14 +12,15 @@ const THE_END = Symbol()
  */
 function *createStream() {
   while (true) {
-    // get the modifiers
-    const modifiers = yield
-    // get the initial stream value
-    const input = yield
+    const
+      // get the modifiers
+      modifiers = yield,
+      // get the initial stream value
+      input = yield
     // end the stream
     if (input === THE_END) return
     // execute the chain
-    yield ruit(input, ...Array.from(modifiers))
+    yield ruit(input, ...modifiers)
   }
 }
 
@@ -62,10 +63,11 @@ erre.cancel = ruit.cancel
  * @returns {Object} erre instance
  */
 export default function erre(...fns) {
-  const success = new Set()
-  const errors = new Set()
-  const modifiers = new Set(fns)
-  const stream = createStream()
+  const
+    success = new Set(),
+    errors = new Set(),
+    modifiers = new Set(fns),
+    stream = createStream()
 
   return {
     onValue(callback) {
@@ -83,7 +85,6 @@ export default function erre(...fns) {
     push(input) {
       // execute the stream
       const { value, done } = exec(stream, modifiers, input)
-
       // dispatch the result only if the generator was not ended
       if (!done) {
         value
@@ -92,17 +93,13 @@ export default function erre(...fns) {
             err => dispatch(errors, err)
           )
       }
-
       return this
     },
     end() {
       // kill the stream
       exec(stream, modifiers, THE_END)
-
       // clean up all the collections
-      success.clear()
-      errors.clear()
-      modifiers.clear()
+      ;[success, errors, modifiers].forEach(el => el.clear())
 
       return this
     },
