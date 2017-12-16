@@ -8,10 +8,9 @@ export default {
       jsnext: true
     })
   ],
-  targets: [
-
+  output: [
     {
-      dest: 'erre.js',
+      file: 'erre.js',
       format: 'umd'
     }
   ]

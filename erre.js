@@ -98,7 +98,7 @@ const THE_END = Symbol();
  * Factory function to create the stream generator
  * @private
  * @generator
- * @yields {Set|Promise} - the stream modifiers, and the async results
+ * @yields  {Set|Promise} - the stream modifiers, and the async results
  * @returns {undefined} just end the stream
  */
 function *createStream() {
@@ -131,7 +131,7 @@ function dispatch(callbacks, value) {
  * @param   {Function} stream - stream generator
  * @param   {Set} modifiers - event modifiers collection
  * @param   {*} input - initial stream input
- * @returns {Object} result
+ * @yields  {Object} result
  * @returns {Boolean} result.done - generator done flag
  * @returns {Promise} result.value - async result
  */
@@ -141,8 +141,7 @@ function exec(stream, modifiers, input) {
   // pass the modifiers to the stream
   stream.next(modifiers);
   // execute the stream
-  const { value, done } = stream.next(input);
-  return { value, done }
+  return stream.next(input)
 }
 
 /**
