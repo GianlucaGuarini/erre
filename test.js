@@ -35,6 +35,23 @@ describe('erre', () => {
       .push(startValue)
   })
 
+  it('can cancel a stream chain', (done) => {
+    const stream = erre(
+      val => val === 1 ? erre.cancel() : val,
+      val => add(val, 1)
+    )
+
+    const expectedValue = 3
+
+    stream
+      .onValue((value) => {
+        assert.equal(expectedValue, value)
+        done()
+      })
+      .push(1)
+      .push(2)
+  })
+
   it('can catch errors', (done) => {
     const stream = erre((val) => {
       throw 'error'

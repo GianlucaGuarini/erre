@@ -53,6 +53,9 @@ function exec(stream, modifiers, input) {
   return stream.next(input)
 }
 
+// alias for ruit canel to stop a stream chain
+erre.cancel = ruit.cancel
+
 /**
  * Stream constuction function
  * @param   {...Function} fns - stream modifiers
