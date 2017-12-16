@@ -35,14 +35,14 @@ stream.push('hate')
 It supports async and sync event chains thanks to [ruit](https://github.com/GianlucaGuarini/ruit)
 
 ```js
-const usernNamesStream = erre(
+const userNamesStream = erre(
   async user => await updateUsers(user), // async function returning a users collection
   users => users.map(user => user.name)
 )
 
-usernNamesStream.onValue(console.log) // ['John'...]
+userNamesStream.onValue(console.log) // ['John'...]
 
-usernNamesStream.push({
+userNamesStream.push({
   name: 'John',
   role: 'Doctor',
   age: 24
