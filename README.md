@@ -1,4 +1,4 @@
-# erre
+<img alt="erre.js" src="erre-logo.svg" width="46%"/>
 
 [![Build Status][travis-image]][travis-url]
 
