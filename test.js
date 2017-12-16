@@ -17,6 +17,24 @@ describe('erre', () => {
       .push(startValue)
   })
 
+  it('can listen and dispatch multiple events', (done) => {
+    const stream = erre()
+    const startValue = 1
+    const eventsAmount = 4
+    let currentEventId = 0
+
+    stream
+      .onValue((value) => {
+        currentEventId ++
+        assert.equal(startValue, value)
+        if (currentEventId === eventsAmount) done()
+      })
+      .push(startValue)
+      .push(startValue)
+      .push(startValue)
+      .push(startValue)
+  })
+
   it('can catch errors', (done) => {
     const stream = erre((val) => {
       throw 'error'

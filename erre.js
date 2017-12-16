@@ -101,24 +101,17 @@ const THE_END = Symbol();
  * @yields {Set|Promise} - the stream modifiers, and the async results
  * @returns {undefined} just end the stream
  */
-function createStream() {
-  const stream = (function *stream() {
-    while (true) {
-      // get the modifiers
-      const modifiers = yield;
-      // get the initial stream value
-      const input = yield;
-      // end the stream
-      if (input === THE_END) return
-      // execute the chain
-      yield ruit(input, ...Array.from(modifiers));
-    }
-  })();
-
-  // start the generator
-  stream.next();
-
-  return stream
+function *createStream() {
+  while (true) {
+    // get the modifiers
+    const modifiers = yield;
+    // get the initial stream value
+    const input = yield;
+    // end the stream
+    if (input === THE_END) return
+    // execute the chain
+    yield ruit(input, ...Array.from(modifiers));
+  }
 }
 
 /**
@@ -143,6 +136,8 @@ function dispatch(callbacks, value) {
  * @returns {Promise} result.value - async result
  */
 function exec(stream, modifiers, input) {
+  // start the next iteration
+  stream.next();
   // pass the modifiers to the stream
   stream.next(modifiers);
   // execute the stream

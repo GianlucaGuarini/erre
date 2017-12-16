@@ -13,8 +13,8 @@
 import erre from 'erre'
 
 const stream = erre(
-  val => val.toUpperCase(),
-  val => val.reverse()
+  string => string.toUpperCase(),
+  string => [...string].reverse().join('')
 )
 
 stream.onValue(val => console.log(val)) // EVOL, ETAH
