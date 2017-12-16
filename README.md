@@ -1,4 +1,4 @@
-<img alt="erre.js" src="erre-logo.svg" width="46%"/>
+<img alt="erre.js" src="https://cdn.rawgit.com/GianlucaGuarini/erre/master/erre-logo.svg" width="50%"/>
 
 [![Build Status][travis-image]][travis-url]
 
