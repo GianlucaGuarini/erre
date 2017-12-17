@@ -211,8 +211,8 @@ stream.push(2)
 
 # TODO List
 
-[ ] erre.fromDOM - to stream DOM nodes events
-[ ] erre.merge - to merge multiple stream results into one
+- [ ] erre.fromDOM - to stream DOM nodes events
+- [ ] erre.merge - to merge multiple stream results into one
 
 [travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
 [travis-url]:https://travis-ci.org/GianlucaGuarini/erre
