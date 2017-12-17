@@ -100,24 +100,30 @@ const THE_END = Symbol();
  * @param {Set} modifiers - stream input modifiers
  * @param {Set} success - success callback functions
  * @param {Set} errors - error callbak functions
- * @generator
- * @yields  {*} - stream input
- * @returns {undefined} just end the stream
+ * @returns {Generator} the stream generator
  */
-function *createStream(modifiers, success, errors) {
-  while (true) {
-    // get the initial stream value
-    const input = yield;
+function createStream(modifiers, success, errors) {
+  const stream = (function* stream() {
+    while (true) {
+      // get the initial stream value
+      const input = yield;
 
-    // end the stream
-    if (input === THE_END) return
+      // end the stream
+      if (input === THE_END) return
 
-    ruit(input, ...modifiers)
-      .then(
-        res => dispatch(success, res),
-        err => dispatch(errors, err)
-      );
-  }
+      // run the input sequence
+      ruit(input, ...modifiers)
+        .then(
+          res => dispatch(success, res),
+          err => dispatch(errors, err)
+        );
+    }
+  })();
+
+  // start the stream
+  stream.next();
+
+  return stream
 }
 
 /**
@@ -146,9 +152,6 @@ function erre(...fns) {
     errors = new Set(),
     modifiers = new Set(fns),
     stream = createStream(modifiers, success, errors);
-
-  // start the generator
-  stream.next();
 
   return {
     onValue(callback) {
