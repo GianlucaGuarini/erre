@@ -6,21 +6,26 @@ const THE_END = Symbol()
 /**
  * Factory function to create the stream generator
  * @private
+ * @param {Set} modifiers - stream input modifiers
+ * @param {Set} success - success callback functions
+ * @param {Set} errors - error callbak functions
  * @generator
- * @yields  {Set|Promise} - the stream modifiers, and the async results
+ * @yields  {*} - stream input
  * @returns {undefined} just end the stream
  */
-function *createStream() {
+function *createStream(modifiers, success, errors) {
   while (true) {
-    const
-      // get the modifiers
-      modifiers = yield,
-      // get the initial stream value
-      input = yield
+    // get the initial stream value
+    const input = yield
+
     // end the stream
     if (input === THE_END) return
-    // execute the chain
-    yield ruit(input, ...modifiers)
+
+    ruit(input, ...modifiers)
+      .then(
+        res => dispatch(success, res),
+        err => dispatch(errors, err)
+      )
   }
 }
 
@@ -36,24 +41,6 @@ function dispatch(callbacks, value) {
   return callbacks
 }
 
-/**
- * Execute a single stream event
- * @param   {Function} stream - stream generator
- * @param   {Set} modifiers - event modifiers collection
- * @param   {*} input - initial stream input
- * @yields  {Object} result
- * @returns {Boolean} result.done - generator done flag
- * @returns {Promise} result.value - async result
- */
-function exec(stream, modifiers, input) {
-  // start the next iteration
-  stream.next()
-  // pass the modifiers to the stream
-  stream.next(modifiers)
-  // execute the stream
-  return stream.next(input)
-}
-
 // alias for ruit canel to stop a stream chain
 erre.cancel = ruit.cancel
 
@@ -67,7 +54,10 @@ export default function erre(...fns) {
     success = new Set(),
     errors = new Set(),
     modifiers = new Set(fns),
-    stream = createStream()
+    stream = createStream(modifiers, success, errors)
+
+  // start the generator
+  stream.next()
 
   return {
     onValue(callback) {
@@ -84,27 +74,19 @@ export default function erre(...fns) {
     },
     push(input) {
       // execute the stream
-      const { value, done } = exec(stream, modifiers, input)
+      stream.next(input)
       // dispatch the result only if the generator was not ended
-      if (!done) {
-        value
-          .then(
-            res => dispatch(success, res),
-            err => dispatch(errors, err)
-          )
-      }
       return this
     },
     end() {
       // kill the stream
-      exec(stream, modifiers, THE_END)
+      stream.next(THE_END)
       // clean up all the collections
       ;[success, errors, modifiers].forEach(el => el.clear())
-
       return this
     },
     fork() {
-      return erre(...Array.from(modifiers))
+      return erre(...modifiers)
     }
   }
 }
