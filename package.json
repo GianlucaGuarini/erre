@@ -1,6 +1,6 @@
 {
   "name": "erre",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Modern, performant and tiny streams script using generators",
   "main": "erre.js",
   "jsnext:main": "index.next.js",
