@@ -116,9 +116,11 @@ describe('erre', () => {
       .push(startValue)
   })
 
-  it('can be ended properly', () => {
+  it('can be ended properly', (done) => {
     const stream = erre()
     const startValue = 1
+
+    stream.onEnd(() => done())
 
     stream
       .onValue((value) => {

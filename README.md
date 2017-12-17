@@ -95,7 +95,8 @@ stream.push(1)
 
 </details>
 
-#### stream.onError(callback) | @returns `stream`
+#### stream.onError(callback)
+##### @returns `stream`
 
 Add a callback that will be called in case of errors or promise rejections during the output generation
 
@@ -111,6 +112,24 @@ stream.onValue(console.log) // never called!!
 stream.onError(console.log) // 'error'
 
 stream.push(1)
+```
+
+</details>
+
+#### stream.onEnd(callback)
+##### @returns `stream`
+
+Add a callback that will be called when the stream will be ended
+
+<details>
+ <summary>Example</summary>
+
+```js
+const stream = erre()
+
+stream.onEnd(() => console.log('ended!')) // ended!
+
+stream.end()
 ```
 
 </details>

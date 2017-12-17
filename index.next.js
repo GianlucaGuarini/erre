@@ -8,28 +8,32 @@ const THE_END = Symbol()
  * @private
  * @param {Set} modifiers - stream input modifiers
  * @param {Set} success - success callback functions
- * @param {Set} errors - error callbak functions
+ * @param {Set} error - error callbak functions
+ * @param {Set} end - end callbak functions
  * @returns {Generator} the stream generator
  */
-function createStream(modifiers, success, errors) {
-  const stream = (function* stream() {
+function createStream(modifiers, success, error, end) {
+  const stream = (function *stream() {
     while (true) {
       // get the initial stream value
       const input = yield
 
       // end the stream
-      if (input === THE_END) return
+      if (input === THE_END) {
+        dispatch(end)
+        return
+      }
 
       // run the input sequence
       ruit(input, ...modifiers)
         .then(
           res => dispatch(success, res),
-          err => dispatch(errors, err)
+          err => dispatch(error, err)
         )
     }
   })()
 
-  // start the stream
+  // init the stream
   stream.next()
 
   return stream
@@ -57,10 +61,8 @@ erre.cancel = ruit.cancel
  */
 export default function erre(...fns) {
   const
-    success = new Set(),
-    errors = new Set(),
-    modifiers = new Set(fns),
-    stream = createStream(modifiers, success, errors)
+    [success, error, end, modifiers] = [new Set(), new Set(), new Set(), new Set(fns)],
+    stream = createStream(modifiers, success, error, end)
 
   return {
     onValue(callback) {
@@ -68,7 +70,11 @@ export default function erre(...fns) {
       return this
     },
     onError(callback) {
-      errors.add(callback)
+      error.add(callback)
+      return this
+    },
+    onEnd(callback) {
+      end.add(callback)
       return this
     },
     connect(fn) {
@@ -76,16 +82,14 @@ export default function erre(...fns) {
       return this
     },
     push(input) {
-      // execute the stream
       stream.next(input)
-      // dispatch the result only if the generator was not ended
       return this
     },
     end() {
       // kill the stream
       stream.next(THE_END)
       // clean up all the collections
-      ;[success, errors, modifiers].forEach(el => el.clear())
+      ;[success, error, end, modifiers].forEach(el => el.clear())
       return this
     },
     fork() {
