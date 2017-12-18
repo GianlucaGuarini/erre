@@ -180,7 +180,7 @@ stream.push(1)
 
 </details>
 
-#### stream.end()
+#### stream.fork()
 ##### @returns new `stream` object
 
 Create a new stream object inheriting the function chain from its parent
