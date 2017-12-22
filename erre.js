@@ -116,7 +116,7 @@ function createStream(modifiers, success, error, end) {
       }
 
       // run the input sequence
-      ruit(input, ...modifiers)
+      yield ruit(input, ...modifiers)
         .then(
           res => dispatch(success, res),
           err => dispatch(error, err)
@@ -155,7 +155,7 @@ function erre(...fns) {
     [success, error, end, modifiers] = [new Set(), new Set(), new Set(), new Set(fns)],
     stream = createStream(modifiers, success, error, end);
 
-  return {
+  return Object.assign(stream, {
     onValue(callback) {
       success.add(callback);
       return this
@@ -174,6 +174,7 @@ function erre(...fns) {
     },
     push(input) {
       stream.next(input);
+      stream.next();
       return this
     },
     end() {
@@ -186,7 +187,7 @@ function erre(...fns) {
     fork() {
       return erre(...modifiers)
     }
-  }
+  })
 }
 
 return erre;
