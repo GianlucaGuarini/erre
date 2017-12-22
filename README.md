@@ -29,7 +29,7 @@ const stream = erre(
 stream.onValue(console.log) // EVOL, ETAH
 
 stream.push('love')
-stream.push('hate')
+stream.push(async () => await 'hate') // async values
 ```
 
 It supports async and sync event chains thanks to [ruit](https://github.com/GianlucaGuarini/ruit)

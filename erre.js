@@ -173,7 +173,9 @@ function erre(...fns) {
       return this
     },
     push(input) {
+      // input
       stream.next(input);
+      // discard the output promise
       stream.next();
       return this
     },
