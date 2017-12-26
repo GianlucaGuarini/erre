@@ -13,6 +13,11 @@ It can be used to manage any kind of sync and async event series and it's inspir
   - [baconjs](https://baconjs.github.io/)
   - [RxJS](http://reactivex.io/rxjs/)
 
+## Installation
+
+```sh
+npm i erre -S
+```
 
 ## Usage
 
@@ -275,7 +280,7 @@ stream.push(2)
 # TODO List
 
 - [ ] erre.fromDOM - to stream DOM nodes events
-- [ ] erre.merge - to merge multiple stream results into one
+- [x] [erre.merge](https://github.com/GianlucaGuarini/erre.merge) - to merge multiple stream results into one
 
 [travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
 [travis-url]:https://travis-ci.org/GianlucaGuarini/erre
