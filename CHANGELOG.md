@@ -1,5 +1,9 @@
 # erre
 
+## 2.1.0
+
+- added: the `erre.install` method
+
 ## 2.0.1
 
 - fixed: typos in the doc
