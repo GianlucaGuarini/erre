@@ -1,5 +1,9 @@
 # erre
 
+## 2.0.1
+
+- fixed: typos in the doc
+
 ## 2.0.0
 
 - changed: all the `on*` API methods were linked to the `on` object for example: `onValue` => `on.value`
