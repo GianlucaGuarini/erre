@@ -7,33 +7,23 @@ const THE_END = Symbol()
  * Factory function to create the stream generator
  * @private
  * @param {Set} modifiers - stream input modifiers
- * @param {Set} success - success callback functions
- * @param {Set} error - error callbak functions
- * @param {Set} end - end callbak functions
  * @returns {Generator} the stream generator
  */
-function createStream(modifiers, success, error, end) {
+function createStream(modifiers) {
   const stream = (function *stream() {
     while (true) {
       // get the initial stream value
       const input = yield
 
       // end the stream
-      if (input === THE_END) {
-        dispatch(end)
-        return
-      }
+      if (input === THE_END) return
 
       // run the input sequence
       yield ruit(input, ...modifiers)
-        .then(
-          res => dispatch(success, res),
-          err => dispatch(error, err)
-        )
     }
   })()
 
-  // init the stream
+  // start the stream
   stream.next()
 
   return stream
@@ -62,41 +52,51 @@ erre.cancel = ruit.cancel
 export default function erre(...fns) {
   const
     [success, error, end, modifiers] = [new Set(), new Set(), new Set(), new Set(fns)],
-    stream = createStream(modifiers, success, error, end)
+    generator = createStream(modifiers),
+    stream = Object.create(generator),
+    addToCollection = (collection) => (fn) => collection.add(fn) && stream
 
   return Object.assign(stream, {
-    onValue(callback) {
-      success.add(callback)
-      return this
-    },
-    onError(callback) {
-      error.add(callback)
-      return this
-    },
-    onEnd(callback) {
-      end.add(callback)
-      return this
-    },
-    connect(fn) {
-      modifiers.add(fn)
-      return this
-    },
+    on: Object.freeze({
+      value: addToCollection(success),
+      error: addToCollection(error),
+      end: addToCollection(end)
+    }),
+    connect: addToCollection(modifiers),
     push(input) {
-      // input
-      stream.next(input)
-      // discard the output promise
-      stream.next()
-      return this
+      const { value, done } = stream.next(input)
+
+      // dispatch the stream events
+      if (!done) {
+        value.then(
+          res => dispatch(success, res),
+          err => dispatch(error, err)
+        )
+      }
+
+      return stream
     },
     end() {
       // kill the stream
       stream.next(THE_END)
+      // dispatch the end event
+      dispatch(end)
       // clean up all the collections
       ;[success, error, end, modifiers].forEach(el => el.clear())
-      return this
+
+      return stream
     },
     fork() {
       return erre(...modifiers)
+    },
+    next(input) {
+      // get the input and run eventually the promise
+      const result = generator.next(input)
+
+      // pause to the next iteration
+      generator.next()
+
+      return result
     }
   })
 }

@@ -26,7 +26,7 @@ const stream = erre(
   string => [...string].reverse().join('')
 )
 
-stream.onValue(console.log) // EVOL, ETAH
+stream.on.value(console.log) // EVOL, ETAH
 
 stream.push('love')
 stream.push(async () => await 'hate') // async values
@@ -40,7 +40,7 @@ const userNamesStream = erre(
   users => users.map(user => user.name)
 )
 
-userNamesStream.onValue(console.log) // ['John'...]
+userNamesStream.on.value(console.log) // ['John'...]
 
 userNamesStream.push({
   name: 'John',
@@ -55,27 +55,27 @@ userNamesStream.push({
 ##### @returns [`stream`](#stream)
 
 Create an `erre` stream object.
-The initial `functions` list is optional and it represents the chain of async or sync events needed to generate the final stream output received via [`onValue`](#streamonvaluecallback) callbacks
+The initial `functions` list is optional and it represents the chain of async or sync events needed to generate the final stream output received via [`on.value`](#streamonvaluecallback) callbacks
 
 ### stream
 
 #### stream.push(value)
 ##### @returns `stream`
 
-Push a new value into the stream that will be asynchronously modified and returned as argument to [`stream.onValue`](#streamonvaluecallback) method
+Push a new value into the stream that will be asynchronously modified and returned as argument to [`stream.on.value`](#streamonvaluecallback) method
 
 <details>
  <summary>Example</summary>
 
 ```js
 const stream = erre()
-stream.onValue(console.log) // 1
+stream.on.value(console.log) // 1
 stream.push(1)
 ```
 
 </details>
 
-#### stream.onValue(callback)
+#### stream.on.value(callback)
 ##### @returns `stream`
 
 Add a callback that will be called receiving the output of the stream asynchronously
@@ -87,15 +87,15 @@ Add a callback that will be called receiving the output of the stream asynchrono
 ```js
 const stream = erre(val => val + 1)
 
-stream.onValue(console.log) // 2
-stream.onValue(val => console.log(val * 2)) // 4
+stream.on.value(console.log) // 2
+stream.on.value(val => console.log(val * 2)) // 4
 
 stream.push(1)
 ```
 
 </details>
 
-#### stream.onError(callback)
+#### stream.on.error(callback)
 ##### @returns `stream`
 
 Add a callback that will be called in case of errors or promise rejections during the output generation
@@ -108,15 +108,15 @@ const stream = erre(val => {
   throw 'error'
 })
 
-stream.onValue(console.log) // never called!!
-stream.onError(console.log) // 'error'
+stream.on.value(console.log) // never called!!
+stream.on.error(console.log) // 'error'
 
 stream.push(1)
 ```
 
 </details>
 
-#### stream.onEnd(callback)
+#### stream.on.end(callback)
 ##### @returns `stream`
 
 Add a callback that will be called when the stream will be ended
@@ -127,7 +127,7 @@ Add a callback that will be called when the stream will be ended
 ```js
 const stream = erre()
 
-stream.onEnd(() => console.log('ended!')) // ended!
+stream.on.end(() => console.log('ended!')) // ended!
 
 stream.end()
 ```
@@ -145,7 +145,7 @@ Enhance the stream adding a new operation to the functions chain to generate its
 ```js
 const stream = erre(val => val + 1)
 
-stream.onValue(console.log) // 2, 4
+stream.on.value(console.log) // 2, 4
 stream.push(1)
 
 // enhance the stream
@@ -166,7 +166,7 @@ End the stream
 ```js
 const stream = erre(val => val + 1)
 
-stream.onValue(console.log) // 2
+stream.on.value(console.log) // 2
 stream.push(1)
 
 // end the stream
@@ -191,11 +191,37 @@ Create a new stream object inheriting the function chain from its parent
 ```js
 const stream = erre(val => val + 1)
 
-stream.onValue(console.log) // 2, 3
+stream.on.value(console.log) // 2, 3
 stream.push(1)
 
 const fork = stream.fork()
-fork.onValue(console.log)
+fork.on.value(console.log)
+fork.connect(val => val * 10) // 20, 60
+
+// 2 independent streams
+fork.push(1)
+stream.push(2)
+fork.push(5)
+```
+
+</details>
+
+#### stream.next(value)
+##### @returns { done: true|false, value: Promise|undefined }
+
+Run a single stream event **without dispatching any event** returning as `value` a promise result of the stream computation
+
+<details>
+ <summary>Example</summary>
+
+```js
+const stream = erre(val => val + 1)
+
+stream.on.value(console.log) // 2, 3
+stream.push(1)
+
+const fork = stream.fork()
+fork.on.value(console.log)
 fork.connect(val => val * 10) // 20, 60
 
 // 2 independent streams
@@ -219,7 +245,7 @@ const stream = erre(val => {
   return val + 1
 })
 
-stream.onValue(console.log) // 2, 3
+stream.on.value(console.log) // 2, 3
 stream.push(1)
 stream.push('foo') // filtered
 stream.push('1') // filtered
