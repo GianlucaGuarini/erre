@@ -1,5 +1,9 @@
 # erre
 
+## 2.1.1
+
+- added: `ruit` into the `erre` dependencies
+
 ## 2.1.0
 
 - added: the `erre.install` method
