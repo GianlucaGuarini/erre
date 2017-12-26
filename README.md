@@ -59,6 +59,8 @@ The initial `functions` list is optional and it represents the chain of async or
 
 ### stream
 
+It's an enhanced [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) object having additional API methods
+
 #### stream.push(value)
 ##### @returns `stream`
 
@@ -209,7 +211,8 @@ fork.push(5)
 #### stream.next(value)
 ##### @returns { done: true|false, value: Promise|undefined }
 
-Run a single stream event **without dispatching any event** returning as `value` a promise result of the stream computation
+Run a single stream sequence (**without dispatching any event**) returning as `value` a promise result of the stream computation.
+If the stream was ended the `done` value will be `true` and the `value` will be `undefined`.
 
 <details>
  <summary>Example</summary>
@@ -217,17 +220,11 @@ Run a single stream event **without dispatching any event** returning as `value`
 ```js
 const stream = erre(val => val + 1)
 
-stream.on.value(console.log) // 2, 3
-stream.push(1)
+stream.on.value(console.log) // never called
 
-const fork = stream.fork()
-fork.on.value(console.log)
-fork.connect(val => val * 10) // 20, 60
+const { value } = stream.next(1)
 
-// 2 independent streams
-fork.push(1)
-stream.push(2)
-fork.push(5)
+value.then(console.log) // 2
 ```
 
 </details>
