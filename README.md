@@ -252,8 +252,9 @@ stream.push(2)
 </details>
 
 ### erre.install(name, fn)
+##### @returns [`erre`](#errefunctions)
 
-Extend erre adding custom API methods
+Extend erre adding custom API methods. Any plugin must have at lease a `name` (as string) and a `function`
 
 <details>
  <summary>Example</summary>
