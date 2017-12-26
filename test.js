@@ -205,4 +205,14 @@ describe('erre', () => {
     assert.equal(done, true)
     assert.equal(value, undefined)
   })
+
+  it('erre.install throws with wrong params', () => {
+    assert.throws(erre.install, Error)
+    assert.throws(erre.install.bind(null, 'foo'), Error)
+    assert.throws(erre.install.bind(null, {}), Error)
+    assert.throws(erre.install.bind(null, 'foo', {}), Error)
+    assert.doesNotThrow(erre.install.bind(null, 'foo', () => {}), Error)
+    assert.throws(erre.install.bind(null, 'foo', () => {}), Error)
+    assert.ok(erre.foo)
+  })
 })

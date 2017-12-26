@@ -2,6 +2,7 @@ import ruit from 'ruit'
 
 // Symbol used to end the stream
 const THE_END = Symbol()
+const API_METHODS = new Set()
 
 /**
  * Factory function to create the stream generator
@@ -41,8 +42,38 @@ function dispatch(callbacks, value) {
   return callbacks
 }
 
+/**
+ * Throw a panic error
+ * @param   {String} message - error message
+ */
+function panic(message) {
+  throw new Error(message)
+}
+
+/**
+ * Install an erre plugin adding it to the API
+ * @param   {String} name - plugin name
+ * @param   {Function} fn - new erre API method
+ * @returns {Function} return the erre function
+ */
+erre.install = function(name, fn) {
+  if (!name || typeof name !== 'string')
+    panic('Please provide a name (as string) for your erre plugin')
+  if (!fn || typeof fn !== 'function')
+    panic('Please provide a function for your erre plugin')
+
+  if (API_METHODS.has(name)) {
+    panic(`The ${ name } is already part of the erre API, please provide a different name`)
+  } else {
+    erre[name] = fn
+    API_METHODS.add(name)
+  }
+
+  return erre
+}
+
 // alias for ruit canel to stop a stream chain
-erre.cancel = ruit.cancel
+erre.install('cancel', ruit.cancel)
 
 /**
  * Stream constuction function

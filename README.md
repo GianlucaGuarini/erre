@@ -251,6 +251,26 @@ stream.push(2)
 
 </details>
 
+### erre.install(name, fn)
+
+Extend erre adding custom API methods
+
+<details>
+ <summary>Example</summary>
+
+```js
+// alias the `console.log` with `erre.log`
+erre.install('log', console.log)
+
+const stream = erre(val => val + 1)
+
+stream.on.value(erre.log) // 2, 3
+stream.push(1)
+stream.push(2)
+```
+
+</details>
+
 # TODO List
 
 - [ ] erre.fromDOM - to stream DOM nodes events
