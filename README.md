@@ -279,7 +279,7 @@ stream.push(2)
 
 # TODO List
 
-- [ ] erre.fromDOM - to stream DOM nodes events
+- [x] [erre.fromDOM](https://github.com/GianlucaGuarini/erre.fromDOM) - to stream DOM nodes events
 - [x] [erre.merge](https://github.com/GianlucaGuarini/erre.merge) - to merge multiple stream results into one
 
 [travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
