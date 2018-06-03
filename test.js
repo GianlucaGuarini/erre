@@ -22,13 +22,18 @@ describe('erre', () => {
     const stream = erre()
     const startValue = 1
     const eventsAmount = 4
-    let currentEventId = 0
+    const eventsIterator = {
+      next() {
+        this.id++
+      },
+      id: 0
+    }
 
     stream.on
       .value((value) => {
-        currentEventId ++
+        eventsIterator.next()
         assert.equal(startValue, value)
-        if (currentEventId === eventsAmount) done()
+        if (eventsIterator.id === eventsAmount) done()
       })
       .push(startValue)
       .push(delay(100).then(() => startValue))
@@ -54,21 +59,21 @@ describe('erre', () => {
   })
 
   it('can catch errors', (done) => {
-    const stream = erre((val) => {
+    const stream = erre(() => {
       throw 'error'
     })
 
     const startValue = 1
 
     stream.on
-      .error((value) => {
+      .error(() => {
         done()
       })
       .push(startValue)
   })
 
   it('can catch async rejections', (done) => {
-    const stream = erre((val) => {
+    const stream = erre(() => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           reject('error')
@@ -79,7 +84,7 @@ describe('erre', () => {
     const startValue = 1
 
     stream.on
-      .error((value) => {
+      .error(() => {
         done()
       })
       .push(startValue)
@@ -124,7 +129,7 @@ describe('erre', () => {
     stream.on.end(() => done())
 
     stream.on
-      .value((value) => {
+      .value(() => {
         throw 'it should never be called if the stream was ended'
       })
       .end()
@@ -138,7 +143,7 @@ describe('erre', () => {
     stream.on.end(() => done())
 
     stream.on
-      .value((value) => {
+      .value(() => {
         stream.end()
       })
       .push(startValue)

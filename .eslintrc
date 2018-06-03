@@ -2,6 +2,9 @@ extends: "@gianlucaguarini/eslint-config"
 
 rules:
   no-constant-condition: 0
+  fp/no-rest-parameters: false
+  fp/no-loops: false
+  fp/no-mutating-methods: false
 
 env:
   mocha: true

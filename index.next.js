@@ -44,7 +44,8 @@ function dispatch(callbacks, value) {
 
 /**
  * Throw a panic error
- * @param   {String} message - error message
+ * @param {string} message - error message
+ * @returns {Error} an error object
  */
 function panic(message) {
   throw new Error(message)
@@ -52,7 +53,7 @@ function panic(message) {
 
 /**
  * Install an erre plugin adding it to the API
- * @param   {String} name - plugin name
+ * @param   {string} name - plugin name
  * @param   {Function} fn - new erre API method
  * @returns {Function} return the erre function
  */
@@ -63,7 +64,7 @@ erre.install = function(name, fn) {
     panic('Please provide a function for your erre plugin')
 
   if (API_METHODS.has(name)) {
-    panic(`The ${ name } is already part of the erre API, please provide a different name`)
+    panic(`The ${name} is already part of the erre API, please provide a different name`)
   } else {
     erre[name] = fn
     API_METHODS.add(name)

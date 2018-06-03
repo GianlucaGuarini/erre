@@ -2,7 +2,6 @@ import resolve from 'rollup-plugin-node-resolve'
 
 export default {
   input: 'index.next.js',
-  name: 'erre',
   plugins: [
     resolve({
       jsnext: true
@@ -10,6 +9,7 @@ export default {
   ],
   output: [
     {
+      name: 'erre',
       file: 'erre.js',
       format: 'umd'
     }
