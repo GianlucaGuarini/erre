@@ -1,5 +1,10 @@
 # erre
 
+## 2.1.2
+
+- updated: eslint config and the other dev dependencies
+- fixed: all the `npm audit` issues
+
 ## 2.1.1
 
 - added: `ruit` into the `erre` dependencies
