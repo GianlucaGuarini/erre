@@ -92,7 +92,6 @@
   }
 
   // Symbol used to end the stream
-  const THE_END = Symbol();
   const API_METHODS = new Set();
 
   /**
@@ -106,9 +105,6 @@
       while (true) {
         // get the initial stream value
         const input = yield;
-
-        // end the stream
-        if (input === THE_END) return
 
         // run the input sequence
         yield ruit(input, ...modifiers);
@@ -200,10 +196,10 @@
         return stream
       },
       end() {
-        // kill the stream
-        stream.next(THE_END);
         // dispatch the end event
-        dispatch(end)
+        dispatch(end);
+        // kill the stream
+        generator.return()
         // clean up all the collections
         ;[success, error, end, modifiers].forEach(el => el.clear());
 
