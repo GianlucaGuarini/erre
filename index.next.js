@@ -1,6 +1,6 @@
 import ruit from 'ruit'
 
-// Symbol used to end the stream
+// Store the erre the API methods to handle the plugins installation
 const API_METHODS = new Set()
 
 /**
