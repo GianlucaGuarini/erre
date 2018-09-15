@@ -1,5 +1,8 @@
 # erre
 
+## 2.1.4
+- updated: simplify the stream end event using the native `generator.return()` method
+
 ## 2.1.2
 
 - updated: eslint config and the other dev dependencies
