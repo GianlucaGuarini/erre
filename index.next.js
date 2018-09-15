@@ -105,10 +105,10 @@ export default function erre(...fns) {
       return stream
     },
     end() {
-      // dispatch the end event
-      dispatch(end)
       // kill the stream
       generator.return()
+      // dispatch the end event
+      dispatch(end)
       // clean up all the collections
       ;[success, error, end, modifiers].forEach(el => el.clear())
 
