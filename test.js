@@ -180,6 +180,31 @@ describe('erre', () => {
       .push(startValue)
   })
 
+
+  it('can be unsubscribed', done => {
+    const results = []
+    const stream = erre(val => add(val, 1))
+
+    stream.on.value(val => {
+      if (typeof val === 'string') return erre.unsubscribe()
+
+      results.push(val)
+    })
+
+    stream
+      .push(1)
+      .push(2)
+      .push(3)
+      .push('hello')
+      .push('world')
+      .push(1)
+
+    setTimeout(() => {
+      assert.equal(results.length, 3)
+      done()
+    })
+  })
+
   it('stream.next will not dispatch events', () => {
     const stream = erre((val) => add(val, 1))
     const startValue = 1

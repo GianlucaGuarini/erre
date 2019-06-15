@@ -94,6 +94,9 @@
 
   // Store the erre the API methods to handle the plugins installation
   const API_METHODS = new Set();
+  const UNSUBSCRIBE_SYMBOL = Symbol();
+  const UNSUBSCRIBE_METHOD = 'unsubscribe';
+  const CANCEL_METHOD = 'cancel';
 
   /**
    * Factory function to create the stream generator
@@ -126,7 +129,10 @@
    * @returns {Set} the callbacks received
    */
   function dispatch(callbacks, value) {
-    callbacks.forEach(f => f(value));
+    callbacks.forEach(f => {
+      // unsubscribe the callback if erre.unsubscribe() will be returned
+      if (f(value) === UNSUBSCRIBE_SYMBOL) callbacks.delete(f);
+    });
     return callbacks
   }
 
@@ -162,7 +168,10 @@
   };
 
   // alias for ruit canel to stop a stream chain
-  erre.install('cancel', ruit.cancel);
+  erre.install(CANCEL_METHOD, ruit.cancel);
+
+  // unsubscribe helper
+  erre.install(UNSUBSCRIBE_METHOD, () => UNSUBSCRIBE_SYMBOL);
 
   /**
    * Stream constuction function
