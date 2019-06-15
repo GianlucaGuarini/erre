@@ -6,17 +6,17 @@ const Benchmark = require('benchmark'),
 suite
   .add('create/destroy', function() {
     const stream = erre()
-    stream.onValue(function() {
+    stream.on.value(function() {
       stream.end()
     })
     stream.push('foo')
   })
   .add('stress', function() {
     const stream = erre(noop, noop, noop, noop)
-    stream.onValue(noop.bind(null))
-    stream.onEnd(noop)
-    stream.onValue(noop.bind(null))
-    stream.onError(noop.bind(null))
+    stream.on.value(noop.bind(null))
+    stream.on.end(noop)
+    stream.on.value(noop.bind(null))
+    stream.on.error(noop.bind(null))
     stream.push('2')
     stream.push(undefined)
     stream.push(null)
@@ -28,12 +28,12 @@ suite
   })
   .add('fork', function() {
     const stream = erre(noop, noop, noop, noop)
-    stream.onValue(noop.bind(null))
-    stream.onValue(noop.bind(null))
+    stream.on.value(noop.bind(null))
+    stream.on.value(noop.bind(null))
     stream.push('2')
     const fork = stream.fork()
     stream.end()
-    fork.onValue(noop.bind(null))
+    fork.on.value(noop.bind(null))
     fork.push('foo')
     fork.end()
   })
