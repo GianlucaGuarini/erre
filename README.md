@@ -141,6 +141,40 @@ stream.end()
 
 </details>
 
+#### stream.off.value(callback)
+##### @returns `stream`
+##### @throws `Error` if `callback` isn't registered
+
+Removes a previously-registered callback
+
+<details>
+ <summary>Example</summary>
+
+```js
+const stream = erre()
+
+const handler = (value) => console.log('handling', value)
+stream.on.value(handler)
+stream.push(1) // handler called, logs: handling 1
+
+stream.off.value(handler)
+stream.push(2) // handler is not called
+
+// throws, because the handler is not registered
+const someOtherHandler = () => console.log(`don't register me`)
+stream.off.value(someOtherHandler)
+```
+
+</details>
+
+#### stream.off.error(callback)
+##### @returns `stream`
+##### @throws `Error` if `callback` isn't registered
+
+#### stream.off.end(callback)
+##### @returns `stream`
+##### @throws `Error` if `callback` isn't registered
+
 #### stream.connect(function)
 ##### @returns `stream`
 
