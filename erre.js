@@ -133,6 +133,7 @@
       // unsubscribe the callback if erre.unsubscribe() will be returned
       if (f(value) === UNSUBSCRIBE_SYMBOL) callbacks.delete(f);
     });
+
     return callbacks
   }
 

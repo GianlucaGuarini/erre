@@ -256,6 +256,30 @@ stream.push(2)
 
 </details>
 
+### erre.unsubscribe()
+
+Static function that if returned by any of the subscribed callbacks can be used to unsubscribe it
+
+<details>
+ <summary>Example</summary>
+
+```js
+const stream = erre(val => val + 1)
+
+stream.on.value(val => {
+  // if this condition will be matched, this callback will be unsubscribed
+  if (typeof val !== 'number') return erre.unsubscribe()
+  console.log(val)
+}) // 2
+stream.push(1)
+// this value will let the previous listener unsubscribe itself
+stream.push('foo')
+stream.push('1')
+stream.push(2) //
+```
+
+</details>
+
 ### erre.install(name, fn)
 ##### @returns [`erre`](#errefunctions)
 
