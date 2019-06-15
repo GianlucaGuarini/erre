@@ -275,7 +275,8 @@ stream.push(1)
 // this value will let the previous listener unsubscribe itself
 stream.push('foo')
 stream.push('1')
-stream.push(2) //
+// this value will not be logged because the stream.on.value was unsubscribed
+stream.push(2)
 ```
 
 </details>
