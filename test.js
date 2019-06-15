@@ -41,6 +41,42 @@ describe('erre', () => {
       .push(startValue)
   })
 
+  it('can remove a subscriber by handler reference', (done) => {
+    const stream = erre()
+    const startValue = 1
+    const eventsAmount = 1
+    const eventsIterator = {
+      next() {
+        this.id++
+      },
+      id: 0
+    }
+
+    const cancelable = (value) => {
+      eventsIterator.next()
+      assert.equal(startValue, value)
+      if (eventsIterator.id > eventsAmount)
+        throw 'unsubscription never happened'
+    }
+
+    (async function() {
+      stream.on.value(cancelable)
+      stream.push(startValue)
+
+      await delay(10)
+      assert.equal(eventsIterator.id, 1)
+
+      stream.off.value(cancelable)
+      stream.push(startValue)
+
+      await delay(10)
+      assert.equal(eventsIterator.id, 1)
+
+      done()
+    })()
+    .catch(e => done(e))
+  })
+
   it('can cancel a stream chain', (done) => {
     const stream = erre(
       val => val === 1 ? erre.cancel() : val,
