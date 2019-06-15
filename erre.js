@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global.erre = factory());
-}(this, (function () { 'use strict';
+  (global = global || self, global.erre = factory());
+}(this, function () { 'use strict';
 
   /**
    * Cancel token
@@ -72,22 +72,23 @@
    * // basically from left to right: 1 => 1 + 1 => 2 * 2
    * ruit(1, addOne, squareAsync).then(result => console.log(result)) // 4
    */
-  function ruit (...tasks) {
+  function ruit(...tasks) {
     return new Promise((resolve, reject) => {
-      return (function run(result) {
-        if (!tasks.length) return resolve(result)
+      return (function run(queue, result) {
+        if (!queue.length) return resolve(result)
 
-        const task = tasks.shift();
+        const [task, ...rest] = queue;
         const value = typeof task === 'function' ? task(result) : task;
+        const done = v => run(rest, v);
 
         // check against nil values
         if (value != null) {
           if (value === CANCEL) return
-          if (value.then) return value.then(run, reject)
+          if (value.then) return value.then(done, reject)
         }
 
-        return Promise.resolve(run(value))
-      })()
+        return Promise.resolve(done(value))
+      })(tasks)
     })
   }
 
@@ -222,4 +223,4 @@
 
   return erre;
 
-})));
+}));
