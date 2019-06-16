@@ -1,5 +1,8 @@
 # erre
 
+## 2.2.0
+- added: unsubscription methods https://github.com/GianlucaGuarini/erre/issues/2
+
 ## 2.1.4
 - updated: simplify the stream end event using the native `generator.return()` method
 
