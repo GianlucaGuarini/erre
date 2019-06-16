@@ -95,7 +95,7 @@
   // Store the erre the API methods to handle the plugins installation
   const API_METHODS = new Set();
   const UNSUBSCRIBE_SYMBOL = Symbol();
-  const UNSUBSCRIBE_METHOD = 'unsubscribe';
+  const UNSUBSCRIBE_METHOD = 'off';
   const CANCEL_METHOD = 'cancel';
 
   /**
@@ -186,7 +186,7 @@
       stream = Object.create(generator),
       addToCollection = (collection) => (fn) => collection.add(fn) && stream,
       deleteFromCollection = (collection) => (fn) => collection.delete(fn) ? stream
-        : panic(`Couldn't remove handler passed by reference`);
+        : panic('Couldn\'t remove handler passed by reference');
 
     return Object.assign(stream, {
       on: Object.freeze({

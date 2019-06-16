@@ -290,7 +290,7 @@ stream.push(2)
 
 </details>
 
-### erre.unsubscribe()
+### erre.off()
 
 Static function that if returned by any of the subscribed callbacks can be used to unsubscribe it
 
@@ -302,7 +302,7 @@ const stream = erre(val => val + 1)
 
 stream.on.value(val => {
   // if this condition will be matched, this callback will be unsubscribed
-  if (typeof val !== 'number') return erre.unsubscribe()
+  if (typeof val !== 'number') return erre.off()
   console.log(val)
 }) // 2
 stream.push(1)

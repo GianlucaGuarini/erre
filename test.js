@@ -69,12 +69,18 @@ describe('erre', () => {
       stream.off.value(cancelable)
       stream.push(startValue)
 
-      await delay(10)
       assert.equal(eventsIterator.id, 1)
 
       done()
     })()
-    .catch(e => done(e))
+  })
+
+  it('can not unsubscribe handlers that were never subscribed before', () => {
+    const stream = erre()
+
+    assert.throws(() => {
+      stream.off.value(function() {})
+    })
   })
 
   it('can cancel a stream chain', (done) => {
@@ -222,7 +228,7 @@ describe('erre', () => {
     const stream = erre(val => add(val, 1))
 
     stream.on.value(val => {
-      if (typeof val === 'string') return erre.unsubscribe()
+      if (typeof val === 'string') return erre.off()
 
       results.push(val)
     })

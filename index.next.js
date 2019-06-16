@@ -3,7 +3,7 @@ import ruit from 'ruit'
 // Store the erre the API methods to handle the plugins installation
 const API_METHODS = new Set()
 const UNSUBSCRIBE_SYMBOL = Symbol()
-const UNSUBSCRIBE_METHOD = 'unsubscribe'
+const UNSUBSCRIBE_METHOD = 'off'
 const CANCEL_METHOD = 'cancel'
 
 /**
@@ -92,13 +92,20 @@ export default function erre(...fns) {
     [success, error, end, modifiers] = [new Set(), new Set(), new Set(), new Set(fns)],
     generator = createStream(modifiers),
     stream = Object.create(generator),
-    addToCollection = (collection) => (fn) => collection.add(fn) && stream
+    addToCollection = (collection) => (fn) => collection.add(fn) && stream,
+    deleteFromCollection = (collection) => (fn) => collection.delete(fn) ? stream
+      : panic('Couldn\'t remove handler passed by reference')
 
   return Object.assign(stream, {
     on: Object.freeze({
       value: addToCollection(success),
       error: addToCollection(error),
       end: addToCollection(end)
+    }),
+    off: Object.freeze({
+      value: deleteFromCollection(success),
+      error: deleteFromCollection(error),
+      end: deleteFromCollection(end)
     }),
     connect: addToCollection(modifiers),
     push(input) {
