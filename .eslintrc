@@ -6,9 +6,6 @@ parserOptions:
 
 rules:
   no-constant-condition: 0
-  fp/no-rest-parameters: false
-  fp/no-loops: false
-  fp/no-mutating-methods: false
-
-env:
-  mocha: true
+  fp/no-rest-parameters: 0
+  fp/no-loops: 0
+  fp/no-mutating-methods: 0

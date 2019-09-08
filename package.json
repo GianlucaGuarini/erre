@@ -36,10 +36,10 @@
   "devDependencies": {
     "@gianlucaguarini/eslint-config": "^2.0.0",
     "benchmark": "^2.1.4",
-    "eslint": "^5.16.0",
-    "mocha": "^6.1.4",
-    "rollup": "^1.15.5",
-    "rollup-plugin-node-resolve": "^5.0.2"
+    "eslint": "^6.3.0",
+    "mocha": "^6.2.0",
+    "rollup": "^1.21.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
     "ruit": "^1.0.4"
