@@ -37,7 +37,7 @@
     "@gianlucaguarini/eslint-config": "^2.0.0",
     "benchmark": "^2.1.4",
     "eslint": "^6.3.0",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "rollup": "^1.21.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
