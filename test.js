@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import erre from './index.js'
+import erre from './index.next.js'
 
 const add = (a, b) => a + b
 const multiply = (a, b) => a * b
