@@ -1,6 +1,6 @@
-<img alt="erre.js" src="https://cdn.rawgit.com/GianlucaGuarini/erre/master/erre-logo.svg" width="50%"/>
+<img alt="erre.js" src="https://cdn.rawgit.com/GianlucaGuarini/erre/main/erre-logo.svg" width="50%"/>
 
-[![Build Status][travis-image]][travis-url]
+[![Build Status][ci-image]][ci-url]
 
 [![NPM version][npm-version-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
@@ -341,8 +341,8 @@ stream.push(2)
 - [x] [erre.fromDOM](https://github.com/GianlucaGuarini/erre.fromDOM) - to stream DOM nodes events
 - [x] [erre.merge](https://github.com/GianlucaGuarini/erre.merge) - to merge multiple stream results into one
 
-[travis-image]:https://img.shields.io/travis/GianlucaGuarini/erre.svg?style=flat-square
-[travis-url]:https://travis-ci.org/GianlucaGuarini/erre
+[ci-image]: https://img.shields.io/github/actions/workflow/status/gianlucaguarini/erre/test.yml?style=flat-square
+[ci-url]: https://github.com/gianlucaguarini/erre/actions
 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
 [license-url]:LICENSE

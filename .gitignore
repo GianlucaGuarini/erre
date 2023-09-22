@@ -38,6 +38,8 @@ jspm_packages
 
 # generated files
 index.js
+index.cjs
 
 # mac useless file
 .DS_Store
+.idea

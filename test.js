@@ -1,5 +1,5 @@
-const assert = require('assert')
-const erre = require('./erre')
+import assert from 'node:assert'
+import erre from './index.js'
 
 const add = (a, b) => a + b
 const multiply = (a, b) => a * b
@@ -59,7 +59,7 @@ describe('erre', () => {
         throw 'unsubscription never happened'
     }
 
-    (async function() {
+    (async() => {
       stream.on.value(cancelable)
       stream.push(startValue)
 

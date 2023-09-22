@@ -1,6 +1,7 @@
-const Benchmark = require('benchmark'),
-  erre = require('./'),
-  suite = new Benchmark.Suite(),
+import Benchmark from 'benchmark'
+import erre from './index.js'
+
+const suite = new Benchmark.Suite(),
   noop = function() {}
 
 suite

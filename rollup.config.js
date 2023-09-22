@@ -10,8 +10,13 @@ export default {
   output: [
     {
       name: 'erre',
-      file: 'erre.js',
+      file: 'index.cjs',
       format: 'umd'
+    },
+    {
+      name: 'erre',
+      file: 'index.js',
+      format: 'es'
     }
   ]
 }

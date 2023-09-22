@@ -1,8 +1,7 @@
 extends: "@gianlucaguarini/eslint-config"
 
 parserOptions:
-  ecmaVersion: 2018
-  sourceType: 'module'
+  ecmaVersion: 'latest'
 
 rules:
   no-constant-condition: 0
