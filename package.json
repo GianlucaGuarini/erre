@@ -18,6 +18,9 @@
     "test": "npm run lint && mocha test.js"
   },
   "files": [
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
     "index.next.js"
   ],
   "repository": {
