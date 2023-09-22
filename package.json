@@ -1,6 +1,6 @@
 {
   "name": "erre",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Modern, performant and tiny streams script using generators",
   "type": "module",
   "main": "index.js",
